@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CES 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .hero {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            height: calc(100vh - 40px);
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .hero-title {
+            flex: 0 0 280px;
+        }
+
+        .hero-title h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: 6px;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #00d4ff, #7b2ff7, #f107a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .subtitle {
+            display: block;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            background: linear-gradient(90deg, #7b2ff7, #f107a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .author {
+            display: block;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #888;
+            letter-spacing: 1px;
+        }
+
+        .hero-video {
+            flex: 1;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            max-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-video video {
+            width: 100%;
+            max-height: calc(100vh - 80px);
+            display: block;
+            background: #000;
+        }
+
+        .content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .group {
+            margin-bottom: 40px;
+        }
+
+        .group-header {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            color: #00d4ff;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .media-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 160px);
+        }
+
+        .media-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .media-wrapper {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .media-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .media-card img:hover {
+            opacity: 0.9;
+        }
+
+        .media-card video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            background: #000;
+        }
+
+        .media-info {
+            padding: 10px 15px;
+            flex-shrink: 0;
+        }
+
+        .media-info p {
+            color: #ccc;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: #00d4ff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1400px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                height: auto;
+                padding: 30px 20px;
+            }
+            .hero-title {
+                flex: none;
+            }
+            .hero-title h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            .hero-title .subtitle {
+                font-size: 1rem;
+            }
+            .hero-video {
+                max-height: 50vh;
+            }
+            .hero-video video {
+                max-height: 50vh;
+            }
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            .media-card {
+                height: calc(100vh - 140px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-title">
+            <h1>CES 2026</h1>
+            <span class="subtitle">CONSUMER ELECTRONICS SHOW</span>
+            <span class="author">Reported by Ling Deng</span>
+        </div>
+        <div class="hero-video">
+            <video controls>
+                <source src="ces/_Overview_/2026.mp4" type="video/mp4">
+            </video>
+        </div>
+    </section>
+
+    <main class="content">
+
+        <!-- Display -->
+        <section class="group">
+            <h2 class="group-header">Display</h2>
+            <div class="gallery">
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/01_Proto Hologram.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Proto Hologram</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/02_LG Curved Screen Wall.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Curved Screen Wall</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/03_LG Immersive Display System.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Immersive Display System</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/04_LG Transparent Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Transparent Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/05_LG Transparent Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Transparent Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/06_LG Transparent Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Transparent Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/07_Naked Eye 3D Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Naked Eye 3D Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/08_LG Smart Product Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Smart Product Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/09_SK Group Sphere Screen.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>SK Group Sphere Screen</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/10_Sansung Ultra Shortthrow Projector.jpg" alt="Samsung Ultra Shortthrow Projector" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Samsung Ultra Shortthrow Projector</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/11_Inkposter Digital Ink Poster.MP4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Inkposter Digital Ink Poster</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/12_Inkposter Digital Ink Poster.JPG" alt="Inkposter Digital Ink Poster" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Inkposter Digital Ink Poster</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/13_Hisense Canvas TV.webp" alt="Hisense Canvas TV" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Hisense Canvas TV</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/14_Hisense Canvas TV.JPG" alt="Hisense Canvas TV" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Hisense Canvas TV</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/15_TCL OLED Portable Foldable Display.JPG" alt="TCL OLED Portable Foldable Display" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>TCL OLED Portable Foldable Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/16_LG Wallpaper TV.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Wallpaper TV</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/17_LG Wallpaper TV.JPG" alt="LG Wallpaper TV" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LG Wallpaper TV</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/18_LG Wallpaper TV.JPG" alt="LG Wallpaper TV" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LG Wallpaper TV</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/19_Govee Outdoor Lights.MP4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Govee Outdoor Lights</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/20_Govee Curtain Lights.MP4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Govee Curtain Lights</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/21_Govee Curtain Lights.JPG" alt="Govee Curtain Lights" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Govee Curtain Lights</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/22_Rockwell Lab Using Programmable Lighting.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Rockwell Lab Using Programmable Lighting</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/24_TERA FIXELL Embedded Programable LED.JPG" alt="TERA FIXELL Embedded Programable LED" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>TERA FIXELL Embedded Programable LED</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/25_3M Polarizer Film As One-sided Mirror Protector.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>3M Polarizer Film As One-sided Mirror Protector</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Display/26_3M Polarizer Film.JPG" alt="3M Polarizer Film" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>3M Polarizer Film</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/27_SK Group Immersive Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>SK Group Immersive Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/28_LG Transparent  Horizontal Display.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Transparent Horizontal Display</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Display/29_Samsung Transparent Horizontal LED.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Samsung Transparent Horizontal LED</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lifestyle -->
+        <section class="group">
+            <h2 class="group-header">Lifestyle</h2>
+            <div class="gallery">
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/01_Ceragem Message Chair.JPG" alt="Ceragem Message Chair" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Ceragem Message Chair</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/02_Ceragem Wellness Furniture.JPG" alt="Ceragem Wellness Furniture" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Ceragem Wellness Furniture</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/03_Ceragem Light Therapy Chair.JPG" alt="Ceragem Light Therapy Chair" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Ceragem Light Therapy Chair</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/04_EverNitro Ntro Coffee Maker.JPG" alt="EverNitro Ntro Coffee Maker" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>EverNitro Ntro Coffee Maker</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/05_TAXA Outdoor Camper.JPG" alt="TAXA Outdoor Camper" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>TAXA Outdoor Camper</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/06_LG RV Equipment.JPG" alt="LG RV Equipment" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LG RV Equipment</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Lifestyle/07_Kohler Smart Showerheads.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Kohler Smart Showerheads</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Lifestyle/08_Kohler Smart Showerheads.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Kohler Smart Showerheads</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/09_Kohler Smart Toilet.JPG" alt="Kohler Smart Toilet" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Kohler Smart Toilet</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/10_Kohler Plugable Vanity Cabinets.JPG" alt="Kohler Plugable Vanity Cabinets" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Kohler Plugable Vanity Cabinets</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/11_Kohler Float Bath.JPG" alt="Kohler Float Bath" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Kohler Float Bath</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Lifestyle/12_Kohler Float Bath.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Kohler Float Bath</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Lifestyle/13_iyu Robot Spa.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>iyu Robot Spa</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/14_LG Dukebox Audio Video Player.JPG" alt="LG Dukebox Audio Video Player" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LG Dukebox Audio Video Player</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Lifestyle/15_LG Dukebox Audio Video Player.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LG Dukebox Audio Video Player</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Lifestyle/16_PureAcoustics Indoor Outdoor Speakers.JPG" alt="PureAcoustics Indoor Outdoor Speakers" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>PureAcoustics Indoor Outdoor Speakers</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Smart Solution -->
+        <section class="group">
+            <h2 class="group-header">Smart Solution</h2>
+            <div class="gallery">
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/01_TCL Smart Hotel System.JPG" alt="TCL Smart Hotel System" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>TCL Smart Hotel System</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/02_TCL Smart Hotel System.JPG" alt="TCL Smart Hotel System" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>TCL Smart Hotel System</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Smart Solution/03_LifeSmart Sublime Ultra Climate Control.MP4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LifeSmart Sublime Ultra Climate Control</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Smart Solution/04_LifeSmart Sublime Ultra Climate Control.MP4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>LifeSmart Sublime Ultra Climate Control</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/05_LifeSmart Sublime Max  Control.JPG" alt="LifeSmart Sublime Max Control" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LifeSmart Sublime Max Control</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/06_LifeSmart Finishes.JPG" alt="LifeSmart Finishes" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LifeSmart Finishes</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/07_LG x Poliform Smart Wash Units.JPG" alt="LG x Poliform Smart Wash Units" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LG x Poliform Smart Wash Units</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/08_LG x Poliform Smart Wash Units.JPG" alt="LG x Poliform Smart Wash Units" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>LG x Poliform Smart Wash Units</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/09_TCL Smart Security Door Lock.JPG" alt="TCL Smart Security Door Lock" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>TCL Smart Security Door Lock</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Smart Solution/10_GTallk Decarbonizing Buildings Intercom.webp" alt="GTallk Decarbonizing Buildings Intercom" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>GTallk Decarbonizing Buildings Intercom</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <video controls muted autoplay loop playsinline>
+                            <source src="ces/Smart Solution/11_Room by Room Readymade Interior Design Solution.MOV" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-info">
+                        <p>Room by Room Readymade Interior Design Solution</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sustainable Design -->
+        <section class="group">
+            <h2 class="group-header">Sustainable Design</h2>
+            <div class="gallery">
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/01_Panasonic Photovaltic Glass.JPG" alt="Panasonic Photovaltic Glass" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Panasonic Photovaltic Glass</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/02_Panasonic Photovaltic Glass.JPG" alt="Panasonic Photovaltic Glass" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Panasonic Photovaltic Glass</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/03_Panasonic Photovaltic Glass.JPG" alt="Panasonic Photovaltic Glass" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Panasonic Photovaltic Glass</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/04_Opti AI Energy Advisor for Buildings.webp" alt="Opti AI Energy Advisor for Buildings" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Opti AI Energy Advisor for Buildings</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/05_Solreborn Mobile On-site Solar Panel Recycling System.webp" alt="Solreborn Mobile On-site Solar Panel Recycling System" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Solreborn Mobile On-site Solar Panel Recycling System</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/07_To Cut Energy Consumption.JPG" alt="To Cut Energy Consumption" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>To Cut Energy Consumption</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/08_The Rise Garden.JPG" alt="The Rise Garden" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>The Rise Garden</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/09_Reencle Home Compost Bin.JPG" alt="Reencle Home Compost Bin" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Reencle Home Compost Bin</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/10_Mosslab Air Purifier.JPG" alt="Mosslab Air Purifier" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>Mosslab Air Purifier</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-wrapper">
+                        <img src="ces/Sustainable Design/11_3M Green Bubble Wrap.JPG" alt="3M Green Bubble Wrap" onclick="openLightbox(this.src)">
+                    </div>
+                    <div class="media-info">
+                        <p>3M Green Bubble Wrap</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Fullscreen image" id="lightbox-img">
+    </div>
+
+    <footer>
+        <p>CES 2026 Media Gallery</p>
+    </footer>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
